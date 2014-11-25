@@ -26,6 +26,8 @@ Then use `npm start` to start the server.
 
 
 Test with `curl` :
-  curl -i localhost:3000/api/cats
+```
+curl -i localhost:3000/api/cats
+```
 
 Note that API call responses are stubs.
