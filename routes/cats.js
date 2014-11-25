@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var cats = require('../controllers/cats')
+
+var CatModel = require('../models/cat');
+var cats = require('../controllers/cats')(CatModel);
 
 router.get('/', cats.index);
 router.get('/:id', cats.get);

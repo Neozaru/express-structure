@@ -22,12 +22,36 @@ var server = app.listen(app.get('port'), function() {
 });
 ```
 
+
+Create mongodb path
+```
+mkdir -p data
+```
+
+Start mongodb server with proper privileges
+```
+mongod --dbpath data
+```
+
+
 Then use `npm start` to start the server.
 
 
 Test with `curl` :
+
+Create new cat
+```
+curl -i localhost:3000/api/cats -X POST -d 'name=lolcat' -d 'mewowed=true'
+```
+
+Retrieve cats
 ```
 curl -i localhost:3000/api/cats
+```
+
+Get cat
+```
+curl -i localhost:3000/api/cats/<myid> -X PUT -d 'name=newname'
 ```
 
 Note that API call responses are stubs.
