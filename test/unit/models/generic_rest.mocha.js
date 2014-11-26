@@ -1,14 +1,24 @@
 var expect = require("chai").expect;
+var mongoose = require('mongoose');
+var mockgoose = require('mockgoose');
+
+var TestModel = mongoose.model('Test', mongoose.Schema({
+    astring: { type: String, required: true },
+    aboolean: { type: Boolean, default: false }
+  })
+);
 
 var base = "../../.."
-var generic_rest = require(base+"/controllers/generic_rest");
+var generic_rest = require(base+"/models/generic_functions");
+
+/* Create in-memory db */
+mockgoose(mongoose);
 
 describe('Generic Rest Model test', function() {
 
 
   beforeEach(function() {
-
-
+    mockgoose.reset(); 
   });
 
   it('should have initial values', function(){
@@ -86,6 +96,14 @@ describe('Generic Rest Model test', function() {
 
   });
 
+  describe('index', function() {
+
+    it('should', function() {
+      console.log("Ok")
+      generic_rest.find(TestModel,{},{})
+
+    });
+  });
 
 
 });
