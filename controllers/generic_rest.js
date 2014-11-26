@@ -1,3 +1,5 @@
+var winston = require('winston');
+
 var generic_functions = require("../models/generic_functions");
 
 var generic = {};
@@ -5,7 +7,13 @@ var generic = {};
 
 generic.index = function(Model, req, res) {
     return generic_functions.find(Model, function(err, items) {
-        return err ? res.sendStatus(500) : res.send(items);
+        if (err) {
+            winston.error(err);
+            res.sendStatus(500);
+        }
+        
+        return res.send(items);  
+        
     });
 }
 
@@ -14,14 +22,21 @@ generic.create = function(Model, fields, required, req, res) {
         if (!_.isEmpty(missing)) {
             return res.status(400).send({"error": {"missing": missing}});
         }
-        return err ? res.sendStatus(500) : res.status(201).send(item);
+
+        if (err) {
+            winston.error(err);
+            res.sendStatus(500);
+        }
+        
+        return res.status(201).send(item);  
+        
     });
 }
 
 generic.get = function(Model, id, req, res) {
     return generic_functions.findById(Model, id, function(err, item) {
         if (err) {
-            console.log(err);
+            winston.error(err);
             return res.sendStatus(500);
         }
 
@@ -32,14 +47,24 @@ generic.get = function(Model, id, req, res) {
 
 generic.delete = function(Model, id, req, res) {
     return generic_functions.remove(Model, id, function(err) {
-        return res.sendStatus(err ? 500 : 202)
+        if (err) {
+            winston.error(err);
+            return res.sendStatus(500);
+        }
+        return res.sendStatus(202)
     });
 
 }
 
 generic.edit = function(Model, id, fields, req, res) {
     return generic_functions.saveExisting(Model, id, req.body, fields, function(err, item) {
-        return  err ? res.sendStatus(500) : res.send(item);
+        if (err) {
+            winston.error(err);
+            res.sendStatus(500);
+        }
+        
+        return res.send(item);  
+        
     });
 }
 

@@ -6,7 +6,9 @@ Express Project Structure
 Created for myself. Shared on github.
 
 Install packages
-  npm install
+```
+npm install
+```
 
 Create your start file in `bin/www`
 
@@ -14,6 +16,9 @@ Create your start file in `bin/www`
 #!/usr/bin/env node
 var debug = require('debug')('express-structure');
 var app = require('../app');
+var winston = require('winston');
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {'timestamp':true});
 
 app.set('port', process.env.PORT || 3000);
 
@@ -36,6 +41,10 @@ mongod --dbpath data
 
 Then use `npm start` to start the server.
 
+Automated testing :
+```
+npm test
+```
 
 Test with `curl` :
 

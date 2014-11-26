@@ -34,12 +34,10 @@ generic.saveNew = function(Model, obj, fields, required, cb) {
     var item = new Model();
     var missing = generic.copyFields(obj, item, fields, required);
     if (!_.isEmpty(missing)) {
-        // return res.status(400).send({"error": {"missing": missing}});
         return cb(null, missing, null);
     }
 
     item.save(function(err) {
-        // return err ? res.sendStatus(500) : res.status(201).send(item);
         return cb(err, [], item);
     });
 }
