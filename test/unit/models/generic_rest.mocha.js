@@ -18,16 +18,6 @@ describe('Generic Rest Model test', function() {
 
   beforeEach(function() {
     mockgoose.reset();
-//     var conn = mongoose.createConnection("mongodb://dummy/test");
-
-//     conn.once('connected', function() {
-//       console.log("cool")    
-//       done();
-//     });
-
-// conn.on('error', function(err) {
-//       console.log("PAS cool")    
-// });
   });
 
 

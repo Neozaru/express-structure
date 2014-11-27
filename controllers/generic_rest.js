@@ -1,5 +1,5 @@
 var winston = require('winston');
-
+var _ = require('underscore');
 var generic_functions = require("../models/generic_functions");
 
 var generic = {};
