@@ -141,5 +141,22 @@ describe('Generic Rest Model test', function() {
       });
     });
 
+    it('shouldn\'t find unexisting cat', function(done) {
+      /* I saw the future */
+      request(app)
+        .get('/api/cats/5478e1487b821bf1177bfc11')
+        .expect(404)
+        .end(done);
+    });
+
+    it('shouldn\'t delete unexisting cat', function(done) {
+      /* I saw the future */
+      request(app)
+        .delete('/api/cats/5478e1487b821bf1177bfc11')
+        .expect(404)
+        .end(done);
+
+    });
+
   });
 });
