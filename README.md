@@ -20,6 +20,22 @@ var winston = require('winston');
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {'timestamp':true});
 
+/* Not bound to database yet */
+var userGetterStub = function(username, password, cb) {
+    if (username == "neozaru" && password == "mypass") {
+        cb(null, {"username": "neozaru"});
+    }
+    else {
+        cb(null, false, {message: "Incorrect credentials"});
+    }
+    
+};
+
+/* Configures Authentication */
+var passport = require('passport');
+var auth = require("../config/auth");
+auth.init(passport, userGetterStub, {token_secret: "xxx"});
+
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
