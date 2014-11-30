@@ -7,16 +7,15 @@ var auth = {};
 
 auth.init = function(passport, userGetter, options) {
     if (!options.token_secret) {
-        new Error("Missing options.token_secret");
+        return new Error("Missing options.token_secret");
     }
-
-    auth.token_secret = options.token_secret;
+    auth.options = options;
 
 	passport.use(new LocalStrategy(userGetter));
 
     passport.use(new BearerStrategy(
         function(token, done) {
-            jwt.verify(token, auth.token_secret, function(err, decoded_user) {
+            jwt.verify(token, auth.options.token_secret, function(err, decoded_user) {
                 return done(err, decoded_user);
             });
         }
@@ -33,10 +32,10 @@ auth.init = function(passport, userGetter, options) {
 };
 
 auth.genToken = function(data) {
-    if (!auth.token_secret) {
+    if (!auth.options) {
         new Error("Call 'auth.init()' before using this function");
     }
-    return jwt.sign(data, auth.token_secret);
+    return jwt.sign(data, auth.options.token_secret, {expiresInMinutes: auth.options.expiresInMinutes || 1440});
 }
 
 module.exports = auth;
