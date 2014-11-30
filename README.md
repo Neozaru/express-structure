@@ -17,24 +17,16 @@ Create your start file in `bin/www`
 var debug = require('debug')('express-structure');
 var app = require('../app');
 var winston = require('winston');
+var UserModel = require('../models/user');
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {'timestamp':true});
 
-/* Not bound to database yet */
-var userGetterStub = function(username, password, cb) {
-    if (username == "neozaru" && password == "mypass") {
-        cb(null, {"username": "neozaru"});
-    }
-    else {
-        cb(null, false, {message: "Incorrect credentials"});
-    }
-    
-};
+var userGetter = UserModel.authenticate();
 
 /* Configures Authentication */
 var passport = require('passport');
 var auth = require("../config/auth");
-auth.init(passport, userGetterStub, {token_secret: "xxx"});
+auth.init(passport, userGetter, {token_secret: "xxx"});
 
 app.set('port', process.env.PORT || 3000);
 
