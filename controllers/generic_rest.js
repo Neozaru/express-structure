@@ -46,11 +46,16 @@ generic.get = function(Model, id, req, res) {
 }
 
 generic.delete = function(Model, id, req, res) {
-    return generic_functions.remove(Model, id, function(err) {
+    return generic_functions.remove(Model, id, function(err, notfound) {
         if (err) {
             winston.error(err);
             return res.sendStatus(500);
         }
+
+        if (notfound) {
+            return res.sendStatus(404);
+        }
+
         return res.sendStatus(202)
     });
 

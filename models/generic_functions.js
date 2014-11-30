@@ -46,7 +46,11 @@ generic.remove = function(Model, id, cb) {
     return generic.findById(Model, id, function(err, item) {
 
         if (err) {
-            cb(err);
+            return cb(err);
+        }
+
+        if (!item) {
+            return cb(null, true);
         }
 
         return item.remove(function(err) {
