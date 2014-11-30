@@ -185,7 +185,8 @@ describe('Generic Rest Model test', function() {
       var item = new TestModel({"astring": "value1"});
       item.save(function(err) {
 
-          generic_functions.saveExisting(TestModel, item.id, {"astring": "other_value"}, ["astring"], function(err, edited_item) {
+          generic_functions.saveExisting(TestModel, item.id, {"astring": "other_value"}, ["astring"], function(err, notfound, edited_item) {
+            expect(notfound).to.not.be;
             expect(edited_item).to.have.property("astring","other_value");
             expect(edited_item).to.have.property("id",item.id);
 

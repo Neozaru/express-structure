@@ -26,7 +26,7 @@ generic.find = function(Model, cb) {
 
 generic.findById = function(Model, id, cb) {
     return Model.findById(id, function(err, item) {
-        cb(err, item);
+        return cb(err, item);
     });
 }
 
@@ -63,13 +63,17 @@ generic.remove = function(Model, id, cb) {
 generic.saveExisting = function(Model, id, obj, fields, cb) {
     return generic.findById(Model, id, function(err, item) {
         if (err) {
-            cb(err)
+            return cb(err)
+        }
+
+        if (!item) {
+            return cb(null, true);
         }
 
         generic.copyFields(obj, item, fields, []);
 
         return item.save(function(err) {
-            return cb(err, item);
+            return cb(err, false, item);
         });
 
     });

@@ -9,5 +9,6 @@ router.get('/', function(req, res) {
 /* Used as meta-router */
 router.use('/cats', require('./cats'));
 router.use('/sessions', require('./sessions'));
+router.use('/users', require('./users'));
 
 module.exports = router;

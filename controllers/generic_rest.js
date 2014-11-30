@@ -9,7 +9,7 @@ generic.index = function(Model, req, res) {
     return generic_functions.find(Model, function(err, items) {
         if (err) {
             winston.error(err);
-            res.sendStatus(500);
+            return res.sendStatus(500);
         }
         
         return res.send(items);  
@@ -25,7 +25,7 @@ generic.create = function(Model, fields, required, req, res) {
 
         if (err) {
             winston.error(err);
-            res.sendStatus(500);
+            return res.sendStatus(500);
         }
         
         return res.status(201).send(item);  
@@ -62,12 +62,16 @@ generic.delete = function(Model, id, req, res) {
 }
 
 generic.edit = function(Model, id, fields, req, res) {
-    return generic_functions.saveExisting(Model, id, req.body, fields, function(err, item) {
+    return generic_functions.saveExisting(Model, id, req.body, fields, function(err, notfound, item) {
         if (err) {
             winston.error(err);
-            res.sendStatus(500);
+            return res.sendStatus(500);
         }
         
+        if (notfound) {
+            return res.sendStatus(404);
+        }
+
         return res.send(item);  
         
     });
