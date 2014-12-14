@@ -10,6 +10,11 @@ Install packages
 npm install
 ```
 
+For 'users' branch, update submodules
+```
+git submodule update --init --recursive
+```
+
 Create your start file in `bin/www`
 
 ```
