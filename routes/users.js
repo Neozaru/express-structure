@@ -7,6 +7,8 @@ var users = require('../controllers/users')(UserModel);
 
 /* Register user */
 router.post('/', users.create);
+/* Activate user */
+router.post('/:userid/activate', users.activate);
 /* Edit profile */
 router.put('/:userid', passport.authenticate('bearer'), users.edit);
 /* Delete account */

@@ -1,0 +1,19 @@
+<h2>Welcome {{user.username}},</h2>
+
+One more step before you can do nothing !
+
+<p>
+	Follow the link bellow to activate your account :
+	<a href="{{statics.baseuri}}?action=activate&userid={{user._id}}&token={{user.token}}">Activate my account</a>
+</p>
+
+<p>
+	Alternately you can copy-paste this URL into your browser :
+	{{statics.baseuri}}?action=activate&userid={{user._id}}&token={{user.token}}
+</p>
+
+See you soon at {{statics.baseuri}} !
+
+
+<hr/>
+Disclaimer : This email is shit

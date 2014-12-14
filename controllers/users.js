@@ -1,4 +1,6 @@
 var generic_rest = require('./generic_rest');
+var mail_utils = require('../common/mail_utils');
+var httplike_errors = require('../common/httplike_errors');
 /* Let caller define which model use (better architecture, esier testing) */
 var usersInj = function(UserModel) {
 
@@ -14,16 +16,43 @@ var usersInj = function(UserModel) {
         });
         UserModel.register(user, req.body.password, function(err, new_user) {
             if (err) {
-                if (err.name) {
-                    switch(err.name) {
-                        case "BadRequestError":
-                            return res.status(400).send(err);
-                            break;
-                    }
+                if (err.code) {
+                    return res.status(err.code).send(err.message);
                 }
-                return res.status(500).send(err);
+                var err = httplike_errors.fromMongo(err);
+                return res.status(err.code).send(err.message);
             }
-            return res.send(new_user)
+
+            UserModel.requestActivation(new_user.id, function(err, user_toact) {
+                if (err) {
+                    return res.status(500);
+                }
+
+                mail_utils.sendActivationMail(user_toact, function(err, html, text) {
+                    if (err) {
+                        return res.sendStatus(500);
+                    }
+                    
+                    return res.send(new_user);
+                });
+
+            });
+        });
+    }
+
+    users.activate = function(req, res) {
+        if (!req.params.userid || !req.body.token) {
+            return res.sendStatus(400);
+        }
+
+        UserModel.activate(req.params.userid, req.body.token, function(err, user) {
+            if (err) {
+                if (err.code) {
+                    return res.status(err.code).send(err.message);
+                }
+                return res.sendStatus(500);
+            }
+            return res.send(user);
         });
     }
 

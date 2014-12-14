@@ -28,6 +28,22 @@ var passport = require('passport');
 var auth = require("../config/auth");
 auth.init(passport, userGetter, {token_secret: "xxx"});
 
+/* Configure mails */
+var mails = require('../config/mails');
+var smtpTransporterConfig = {
+	host: 'mail.mailoo.org',
+    port: 25,
+    auth: {
+        user: 'neozaru@mailoo.org',
+        pass: 'xxx'
+    }
+};
+
+mails.init(smtpTransporterConfig, {
+	static_context: {baseuri: "http://localhost/"}
+});
+
+
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
