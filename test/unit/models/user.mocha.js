@@ -9,7 +9,7 @@ mockgoose(mongoose);
 
 
 describe('User model test', function() {
-
+  this.timeout(5000);
 
   beforeEach(function() {
     mockgoose.reset();
@@ -113,7 +113,7 @@ describe('User model test', function() {
         expect(new_user.token).to.be.undefined;
 
         /* Activation function returns the user */
-        UserModel.requestActivation("neozaru@foo.org", function(err, user) {
+        UserModel.requestActivation(new_user.id, function(err, user) {
           expect(err).to.be.null;
           expect(user).to.have.property("token");
           expect(user.token).to.not.be.empty;
@@ -135,7 +135,7 @@ describe('User model test', function() {
         expect(new_user.token).to.be.undefined;
 
         /* Activation function returns the user */
-        UserModel.requestActivation("neozaru@foo.org", function(err, user) {
+        UserModel.requestActivation(new_user.id, function(err, user) {
           expect(err).to.be.not.null;
           done();
 
@@ -152,10 +152,10 @@ describe('User model test', function() {
         expect(err).to.be.null;
 
         /* Activation function returns the user */
-        UserModel.requestActivation("neozaru@foo.org", function(err, user) {
+        UserModel.requestActivation(new_user.id, function(err, user) {
           expect(err).to.be.null;
 
-          UserModel.activate("neozaru@foo.org", user.token, function(err, activated_user) {
+          UserModel.activate(new_user.id, user.token, function(err, activated_user) {
             expect(err).to.be.null;
             expect(activated_user).to.have.property("activated", true);
             expect(activated_user.token).to.be.undefined;
@@ -178,10 +178,10 @@ describe('User model test', function() {
         expect(err).to.be.null;
 
         /* Activation function returns the user */
-        UserModel.requestActivation("neozaru@foo.org", function(err, user) {
+        UserModel.requestActivation(new_user.id, function(err, user) {
           expect(err).to.be.null;
 
-          UserModel.activate("neozaru@foo.org", "BADTOKEN", function(err, activated_user) {
+          UserModel.activate(new_user.id, "BADTOKEN", function(err, activated_user) {
             expect(err).to.be.not.null;
             done();
           });

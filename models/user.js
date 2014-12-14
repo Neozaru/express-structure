@@ -11,42 +11,51 @@ var userSchema = mongoose.Schema({
 
 
 var myPasswordValidator = function(password, cb) {
-	if (!validator.isLength(password, 4, 32)) {
-		return cb("Password should be between 4 and 32 chars");
-	}
-	return cb(null);
+    if (!validator.isLength(password, 4, 32)) {
+        return cb("Password should be between 4 and 32 chars");
+    }
+    return cb(null);
 }
 
 userSchema.plugin(mongooseToken);
 
 /* Will create schema fields : email, hash (password), salt (password) */
 userSchema.plugin(passportLocalMongoose, {
-	usernameField: "email",
-	usernameLowerCase: true,
-	passwordValidator: myPasswordValidator
+    usernameField: "email",
+    usernameLowerCase: true,
+    passwordValidator: myPasswordValidator
 });
 
 /* Another cool plugin that controls JSON deserialization */
 userSchema.plugin(jsonSelect, 'username email');
 
 
-userSchema.static('requestActivation', function (email, cb) {
-  this.findOne({email: email, activated: false}).exec().then(function (user) {
-    if (!user) { 
-    	return cb("Can't request activation : Unknown account or account already activated.");
-    }
-    return user.setToken(cb);
-  });
+userSchema.static('requestActivation', function (id, cb) {
+    this.findById(id).exec().then(
+        function (user) {
+            if (!user || user.activated) { 
+                return cb("Can't request activation : Unknown account or account already activated.");
+            }
+            return user.setToken(cb);
+        }, 
+        cb
+  );
 });
 
-userSchema.static('activate', function (email, token, cb) {
-  this.getByToken(token, {email: email, activated: false}).then(function (user) {
-    if (!user) { 
-    	return cb("Can't activate account : Bad token or account already activated.");
+userSchema.static('activate', function (id, token, cb) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return cb("Invalid user id");
     }
-    user.activated = true;
-    return user.resetToken(cb);
-  });
+    this.getByToken(token, {_id: id, activated: false}).then(
+        function (user) {
+            if (!user) { 
+                return cb("Can't activate account : Bad token or account already activated.");
+            }
+            user.activated = true;
+            return user.resetToken(cb);
+        },
+        cb
+    );
 });
 
 module.exports = mongoose.model('User', userSchema);
