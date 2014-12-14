@@ -1,0 +1,3 @@
+[submodule "lib/passport-local-mongoose"]
+	path = lib/passport-local-mongoose
+	url = https://github.com/Neozaru/passport-local-mongoose.git
