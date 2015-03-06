@@ -11,7 +11,7 @@ auth.init = function(passport, userGetter, options) {
     }
     auth.options = options;
 
-	passport.use(new LocalStrategy(userGetter));
+	passport.use(new LocalStrategy({usernameField: 'email'}, userGetter));
 
     passport.use(new BearerStrategy(
         function(token, done) {

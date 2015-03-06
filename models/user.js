@@ -5,7 +5,7 @@ var mongooseToken = require('mongoose-token');
 var validator = require('validator');
 
 var userSchema = mongoose.Schema({
-    username: { type: String, required: true },
+    username: { type: String, required: false },
     activated: { type: Boolean, required: true, default: false}
 });
 

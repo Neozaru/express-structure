@@ -20,9 +20,9 @@ describe('User model test', function() {
   describe('invalid inputs', function() {
 
     /* No username */
-    it('should fail if no username', function(done) {
+    it('should not fail if no username', function(done) {
       UserModel.register({"email": "neozaru@foo.org"}, "mypassword", function(err, new_user) {
-        expect(err).to.be.not.null;
+        expect(err).to.be.null;
         done();
       });
     });
