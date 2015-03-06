@@ -19,7 +19,7 @@ MailStub.prototype.send = function(mail, cb) {
 };
 
 
-var app = require("../../../app");
+var app = require("../../../app")();
 var expect = require('chai').expect;
 
 describe('Users API test  ', function() {

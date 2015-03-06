@@ -5,7 +5,7 @@ var expect = require('chai').expect;
 /* Creates in-memory db and mocks mongoose globally */
 var mockgoose = require('mockgoose');
 mockgoose(mongoose);
-var app = require("../../../app");
+var app = require("../../../app")();
 
 describe('Generic Rest Model test', function() {
 

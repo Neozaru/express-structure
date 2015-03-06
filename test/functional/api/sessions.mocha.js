@@ -17,7 +17,7 @@ var passport = require('passport');
 var auth = require("../../../config/auth");
 auth.init(passport, userGetterStub, {token_secret: "xxx", expiresInMinutes: 43200});
 
-var app = require("../../../app");
+var app = require("../../../app")();
 
 
 describe('Authentication tests', function() {

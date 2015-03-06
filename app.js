@@ -14,6 +14,9 @@ var auth = require("./config/auth");
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mydb');
+var appFunc = function(staticPath) {
+
+staticPath = staticPath || path.join(__dirname, 'public')
 // view engine setup
 var app = express();
 app.set('view engine', 'jade');
@@ -25,7 +28,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(staticPath));
 app.use(compression());
 app.use(passport.initialize());
 app.use('/', routes);
@@ -51,5 +54,6 @@ app.use(function(err, req, res, next) {
     res.send(err);
 });
 
-
-module.exports = app;
+return app;
+};
+module.exports = appFunc;
